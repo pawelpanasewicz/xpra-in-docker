@@ -14,18 +14,31 @@ RUN apt-get update -y \
  firefox \
  sudo
 
-#xpra
+#xpra and it's dependencies
 RUN curl https://xpra.org/gpg.asc | apt-key add -
 RUN echo "deb https://xpra.org/ trusty main" > /etc/apt/sources.list.d/xpra.list
-RUN apt-get update -y
-RUN apt-get upgrade -y
-RUN apt-get install -y xpra
-RUN apt-get install -y python-dbus
+RUN apt-get update -y \
+ && apt-get upgrade -y \
+ && apt-get install -y \
+ xpra \
+ python-dbus \
+ Xorg \
+ dbus-x11 \
+ xserver-xorg-video-dummy
+
+RUN mkdir -p /var/run/xpra
+RUN chown :xpra /var/run/xpra
+RUN chmod g+w /var/run/xpra
+
+# Upstart and DBus have issues inside docker. We work around in order to install firefox.
+#(Roberto G. Hashioka - docker-desktop)
+RUN dpkg-divert --local --rename --add /sbin/initctl && ln -sf /bin/true /sbin/initctl
+
 
 #create user devbox with password asdf
 RUN adduser --disabled-password --gecos "" devbox
 RUN echo "devbox:asdf"| chpasswd
-RUN useradd -G xpra vivek #add devbox user to xpra group
+RUN usermod -a -G sudo,xpra,tty,video,dialout  devbox #add devbox user to groups
 
 #run ssh service
 RUN mkdir /var/run/sshd
