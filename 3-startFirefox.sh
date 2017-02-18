@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-#login to 'devbox' coitainer. Password for user 'devbox' is 'asdf'
+#login to 'devbox' container. Password for user 'devbox' is 'asdf'
+
 ssh devbox@127.0.0.1
 
 # Output should be something like this:
@@ -21,6 +22,7 @@ ssh devbox@127.0.0.1
 
 
 #now start xpra in that container
+
 xpra start :10
 
 #Output should be similar to this:
@@ -57,7 +59,7 @@ DISPLAY=:10 firefox
 
 
 
-#now go to back to windows CMD
+# now go to back to windows CMD
 
 
 
