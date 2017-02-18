@@ -27,15 +27,7 @@ RUN adduser --disabled-password --gecos "" devbox
 RUN echo "devbox:asdf"| chpasswd
 RUN useradd -G xpra vivek #add devbox user to xpra group
 
-#RUN apt-get install -y crypt
-#RUN DOCKER_PASSWORD=dupa
-#echo User: dev1 Password: $DOCKER_PASSWORD
-#DOCKER_ENCRYPYTED_PASSWORD=`perl -e 'print crypt('"$DOCKER_PASSWORD"', "aa"),"\n"'`
-#RUN useradd -G sudo dev1
-
-#ADD c:/users/W541 /W541
-
+#run ssh service
 RUN mkdir /var/run/sshd
-
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
